@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles"/>
+    <head>
+        <css src="Sales_Quote::css/quote-view.css" />
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Sales\Quote\Block\Adminhtml\Quote\View" name="sales_quote_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Sales\Quote\Block\Adminhtml\Quote\View\Tabs" name="sales_quote_tabs">
+                <block class="Sales\Quote\Block\Adminhtml\Quote\View\Tab\Info" name="quote_tab_info" template="quote/view/tab/info.phtml">
+                    <block class="Sales\Quote\Block\Adminhtml\Quote\View\Info" name="quote_info" template="quote/view/info.phtml">
+                        <container name="extra_customer_info"/>
+                    </block>
+                    <block class="Sales\Quote\Block\Adminhtml\Quote\View\Items" name="quote_items" template="quote/view/items.phtml">
+                        <block class="Magento\Framework\View\Element\RendererList" name="quote.item.renderers" as="renderer.list">
+                            <block class="Sales\Quote\Block\Adminhtml\Quote\View\Item\Renderer" name="quote.item.renderers.default" as="default" template="quote/view/item/default.phtml"/>
+                            <block class="Sales\Quote\Block\Adminhtml\Quote\View\Item\Renderer" name="quote.item.renderers.simple" as="simple" template="quote/view/item/default.phtml"/>
+                        </block>
+                    </block>
+                    <block class="Sales\Quote\Block\Adminhtml\Quote\Totals" name="quote_totals" template="quote/view/totals.phtml">
+                        <block class="Sales\Quote\Block\Adminhtml\Quote\Totals\Tax" name="tax" template="quote/view/totals/tax.phtml"/>
+                    </block>
+                </block>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">quote_info</argument>
+                    <argument name="block" xsi:type="string">quote_tab_info</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <block class="Sales\Quote\Block\Adminhtml\Quote\View\Item\Price\Renderer" name="quote.item.price.unit" template="Sales_Quote::item/price/unit.phtml"/>
+        <block class="Sales\Quote\Block\Adminhtml\Quote\View\Item\Price\Renderer" name="quote.item.price.row" template="Sales_Quote::item/price/row.phtml"/>
+    </body>
+</page>

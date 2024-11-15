@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\CatalogInventory\Model\Stock\Status">
+        <plugin name="sales_quote_after_get_stock_status" type="Sales\Quote\Plugin\Model\Stock\Status"/>
+    </type>
+    <type name="Magento\CatalogInventory\Model\Stock\Item">
+        <plugin name="sales_quote_after_get_stock_status" type="Sales\Quote\Plugin\Model\Stock\Item"/>
+    </type>
+
+    <preference for="Magento\Tax\Helper\Data" type="Sales\Quote\Helper\Tax\Data"/>
+    <preference for="Magento\Quote\Model\Quote" type="Sales\Quote\Model\Quote"/>
+
+    <type name="Magento\Framework\View\Element\Message\MessageConfigurationsPool">
+        <arguments>
+            <argument name="configurationsMap" xsi:type="array">
+                <item name="orderCreatedSuccessfullyMessage" xsi:type="array">
+                    <item name="renderer" xsi:type="const">\Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE</item>
+                    <item name="data" xsi:type="array">
+                        <item name="template" xsi:type="string">Sales_Quote::messages/orderCreatedSuccessfullyMessage.phtml</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Sales\Quote\Observer\Sales\Quote\AdminAclObserver">
+        <arguments>
+            <argument name="fullActionNameToResource" xsi:type="array">
+                <item name="sales_quote_quote_index" xsi:type="string">Sales_Quote::quote</item>
+                <item name="sales_quote_quote_inlineedit" xsi:type="string">Sales_Quote::view_quote</item>
+                <item name="sales_quote_quote_view" xsi:type="string">Sales_Quote::view_quote</item>
+                <item name="sales_quote_quote_save" xsi:type="string">Sales_Quote::view_quote</item>
+                <item name="sales_quote_quote_address" xsi:type="string">Sales_Quote::view_quote</item>
+                <item name="sales_quote_quote_addresssave" xsi:type="string">Sales_Quote::view_quote</item>
+                <item name="sales_quote_order_create" xsi:type="string">Sales_Quote::create_order</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Sales\Quote\Block\Adminhtml\Quote\View">
+        <plugin name="sales_quote_acl"
+                type="Sales\Quote\Plugin\Sales\Quote\Block\Adminhtml\Quote\ViewPlugin"/>
+    </type>
+    <type name="Sales\Quote\Ui\Component\Listing\Column\Actions">
+        <plugin name="sales_quote_acl"
+                type="Sales\Quote\Plugin\Sales\Quote\Ui\Component\Listing\Column\ActionsPlugin"/>
+    </type>
+    <type name="Sales\Quote\Controller\Adminhtml\Order\Create">
+        <plugin name="sales_quote_acl"
+                type="Sales\Quote\Plugin\Sales\Quote\Controller\Adminhtml\Order\CreatePlugin"/>
+    </type>
+</config>

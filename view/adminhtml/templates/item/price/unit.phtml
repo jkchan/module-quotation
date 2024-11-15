@@ -1,0 +1,17 @@
+<?php
+/** @var $block Renderer */
+/** @var $escaper Escaper */
+
+use Magento\Framework\Escaper;
+use Sales\Quote\Block\Adminhtml\Quote\View\Item\Price\Renderer;
+
+$_item = $block->getItem();
+?>
+<span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+    <span class="cart-price">
+        <?= $escaper->escapeHtml(
+            $this->helper(Magento\Checkout\Helper\Data::class)->formatPrice($_item->getCalculationPrice()),
+            ['span']
+        ) ?>
+    </span>
+</span>

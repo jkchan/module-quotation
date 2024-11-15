@@ -1,0 +1,20 @@
+{
+  "name": "jkchan/module-quotation",
+  "description": "This module allows the admin to view quotations stored in the database's quote table.",
+  "require": {
+    "php": ">=8.0"
+  },
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "license": [
+    "MIT"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Sales\\Quote\\": ""
+    }
+  }
+}

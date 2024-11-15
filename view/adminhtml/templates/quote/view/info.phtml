@@ -1,0 +1,215 @@
+<?php
+/**
+ * @var Info    $block
+ * @var Escaper $escaper
+ */
+
+use Magento\Framework\Escaper;
+use Sales\Quote\Block\Adminhtml\Quote\View\Info;
+
+$quote = $block->getQuote();
+
+$baseCurrencyCode   = (string)$quote->getBaseCurrencyCode();
+$globalCurrencyCode = (string)$quote->getGlobalCurrencyCode();
+$quoteCurrencyCode  = (string)$quote->getQuoteCurrencyCode();
+
+$quoteAdminDate = $block->formatDate(
+    $block->getQuoteAdminDate($quote->getCreatedAt()),
+    IntlDateFormatter::MEDIUM,
+    true
+);
+
+$quoteStoreDate = $block->formatDate(
+    $quote->getCreatedAt(),
+    IntlDateFormatter::MEDIUM,
+    true,
+    $block->getTimezoneForStore($quote->getStore())
+);
+
+$customerUrl = $block->getCustomerViewUrl();
+
+$allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub', 'sup', 'ul'];
+?>
+
+<section class="admin__page-section quote-view-account-information">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $escaper->escapeHtml(__('Quote & Account Information')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item quote-information">
+            <?php /* Quote Information */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title">
+                    <?= $escaper->escapeHtml(__('Quote #%1', $quote->getId())) ?>
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary quote-information-table">
+                    <tr>
+                        <th><?= $escaper->escapeHtml(__('Quote Date')) ?></th>
+                        <td><?= $escaper->escapeHtml($quoteAdminDate) ?></td>
+                    </tr>
+                    <?php if ($quoteAdminDate != $quoteStoreDate) : ?>
+                        <tr>
+                            <th><?= $escaper->escapeHtml(__('Quote Date (%1)',
+                                    $block->getTimezoneForStore($quote->getStore()))) ?></th>
+                            <td><?= $escaper->escapeHtml($quoteStoreDate) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?= $block->getChildHtml() ?>
+                    <?php if ($block->isSingleStoreMode() == false) : ?>
+                        <tr>
+                            <th><?= $escaper->escapeHtml(__('Purchased From')) ?></th>
+                            <td><?= $escaper->escapeHtml($block->getQuoteStoreName(), ['br']) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php if ($quote->getRemoteIp() && $block->shouldDisplayCustomerIp()) : ?>
+                        <tr>
+                            <th><?= $escaper->escapeHtml(__('Placed from IP')) ?></th>
+                            <td>
+                                <?= $escaper->escapeHtml($quote->getRemoteIp()); ?>
+                                <?= $quote->getXForwardedFor() ? ' (' . $escaper->escapeHtml($quote->getXForwardedFor()) . ')' : ''; ?>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php if ($globalCurrencyCode !== $baseCurrencyCode) : ?>
+                        <tr>
+                            <th><?= $escaper->escapeHtml(__('%1 / %2 rate:', $globalCurrencyCode,
+                                    $baseCurrencyCode)) ?></th>
+                            <td><?= $escaper->escapeHtml($quote->getBaseToGlobalRate()) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php if ($baseCurrencyCode !== $quoteCurrencyCode && $globalCurrencyCode !== $quoteCurrencyCode) : ?>
+                        <tr>
+                            <th><?= $escaper->escapeHtml(__('%1 / %2 rate:', $quoteCurrencyCode,
+                                    $baseCurrencyCode)) ?></th>
+                            <td><?= $escaper->escapeHtml($quote->getBaseToQuoteRate()) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item quote-account-information">
+            <?php /* Account Information */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $escaper->escapeHtml(__('Account Information')) ?></span>
+                <div class="actions">
+                    <?php if ($customerUrl) : ?>
+                        <a href="<?= $customerUrl ?>" target="_blank">
+                            <?= $escaper->escapeHtml(__('Edit Customer')) ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="admin__page-section-item-content">
+                <form id="edit_form" method="post" action="<?= $escaper->escapeUrl($block->getSaveUrl())?>" >
+                    <input name="quote_id" type="hidden" value="<?= $escaper->escapeHtmlAttr($quote->getId()) ?>" />
+                    <input name="form_key" type="hidden" value="<?= $escaper->escapeHtmlAttr($block->getFormKey()) ?>" />
+                        <table class="admin__table-secondary quote-account-information-table">
+                        <tr>
+                            <th><?= $escaper->escapeHtml(__('Customer')) ?></th>
+                            <td>
+                                <div class="field firstname required">
+                                    <label for="customer_firstname" class="label"><?= $escaper->escapeHtml(__('First Name'))?></label>
+                                    <div class="control">
+                                        <input type="text"
+                                               name="customer_firstname"
+                                               id="customer_firstname"
+                                               value="<?= $quote->getCustomerFirstname() ?>"
+                                               title="<?= $escaper->escapeHtml(__('First Name'))?>"
+                                               class="input-text" />
+                                    </div>
+                                </div>
+                                <div class="field lastname required">
+                                    <label for="customer_lastname" class="label"><?= $escaper->escapeHtml(__('Last Name'))?></label>
+                                    <div class="control">
+                                        <input type="text"
+                                               name="customer_lastname"
+                                               id="customer_lastname"
+                                               value="<?= $quote->getCustomerLastname()?>"
+                                               title="<?= $escaper->escapeHtml(__('Last Name'))?>"
+                                               class="input-text"
+                                        />
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?= $escaper->escapeHtml(__('Email')) ?></th>
+                            <td>
+                                <div class="field email required">
+                                    <div class="control">
+                                        <input type="text"
+                                               name="customer_email"
+                                               id="customer_email"
+                                               value="<?= $quote->getCustomerEmail() ?>"
+                                               title="Email Address"
+                                               class="validate-email required-entry input-text" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php if ($groupName = $block->getCustomerGroupName()) : ?>
+                            <tr>
+                                <th><?= $escaper->escapeHtml(__('Customer Group')) ?></th>
+                                <td><?= $escaper->escapeHtml($groupName) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                        <?php foreach ($block->getCustomerAccountData() as $data) : ?>
+                            <tr>
+                                <th><?= $escaper->escapeHtml($data['label']) ?></th>
+                                <td><?= $escaper->escapeHtml($data['value'], ['br']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?= $block->getChildHtml('extra_customer_info') ?>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="admin__page-section quote-addresses">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $escaper->escapeHtml(__('Address Information')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item quote-billing-address">
+            <?php /* Billing Address */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $escaper->escapeHtml(__('Billing Address')) ?></span>
+                <div class="actions"><?= /* @noEscape */
+                    $block->getAddressEditLink($quote->getBillingAddress()); ?></div>
+            </div>
+            <address class="admin__page-section-item-content">
+                <?php if (!$block->isValidAddress($quote->getBillingAddress())): ?>
+                    <?= __('Address is not valid. Please update it before processing.')?>
+                <?php endif; ?>
+                <?= $escaper->escapeHtml($block->getFormattedAddress($quote->getBillingAddress()),
+                    $allowedAddressHtmlTags); ?>
+            </address>
+        </div>
+        <br>
+        <?php if (!$block->getQuote()->getIsVirtual()) : ?>
+            <div class="admin__page-section-item quote-shipping-address">
+                <?php /* Shipping Address */ ?>
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?= $escaper->escapeHtml(__('Shipping Address')) ?></span>
+                    <div class="actions">
+                        <?= /* @noEscape */
+                        $block->getAddressEditLink($quote->getShippingAddress()); ?>
+                    </div>
+                </div>
+                <address class="admin__page-section-item-content">
+                    <?php if (!$block->isValidAddress($quote->getShippingAddress())): ?>
+                        <?= __('Address is not valid. Please update it before processing.')?>
+                    <?php endif; ?>
+                    <?= $escaper->escapeHtml($block->getFormattedAddress($quote->getShippingAddress()),
+                        $allowedAddressHtmlTags); ?>
+                </address>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>

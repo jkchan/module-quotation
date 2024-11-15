@@ -1,0 +1,15 @@
+<?php
+/** @var Template $block */
+/** @var Escaper $escaper */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+?>
+<?= $escaper->escapeHtml(
+    __('Order created successfully: Order ID - %1. <a href="%2" target="_blank">View order.</a> ',
+        $block->getData('order_id'),
+        $block->getData('url')
+    ),
+    ['a']
+); ?>

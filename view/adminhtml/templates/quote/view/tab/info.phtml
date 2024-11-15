@@ -1,0 +1,61 @@
+<?php
+/** @var $block Info */
+/** @var $escaper Escaper */
+
+/** @var SecureHtmlRenderer $secureRenderer */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Sales\Quote\Block\Adminhtml\Quote\View\Tab\Info;
+
+?>
+<?php $quote = $block->getQuote() ?>
+
+<?= $block->getChildHtml('quote_info') ?>
+<input type="hidden" name="quote_id" value="<?= (int)$quote->getId() ?>"/>
+
+<section class="admin__page-section quote-view-billing-shipping">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $escaper->escapeHtml(__('Payment &amp; Shipping Method')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item quote-payment-method<?= ($quote->getIsVirtual() ?
+            ' quote-payment-method-virtual' : '') ?>">
+            <?php /* Payment Method */ ?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $escaper->escapeHtml(__('Payment Information')) ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <div class="quote-payment-method-title"><?= $block->getPaymentHtml() ?></div>
+                <div class="quote-payment-currency">
+                    <?= $escaper->escapeHtml(__('The quote was placed using %1.', $quote->getQuoteCurrencyCode())) ?>
+                </div>
+                <div class="quote-payment-additional">
+                    <?= $block->getChildHtml('quote_payment_additional') ?>
+                    <?= $block->getChildHtml('payment_additional_info') ?>
+                </div>
+            </div>
+        </div>
+        <?= $block->getChildHtml('quote_shipping_view') ?>
+    </div>
+</section>
+
+<?= $block->getChildHtml('quote_additional_info') ?>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $escaper->escapeHtml(__('Quote Items')) ?></span>
+    </div>
+    <?= $block->getItemsHtml() ?>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $escaper->escapeHtml(__('Quote Totals')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item quote-totals">
+            <?= $block->getChildHtml('quote_totals') ?>
+        </div>
+    </div>
+</section>

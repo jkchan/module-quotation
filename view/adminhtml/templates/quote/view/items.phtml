@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var Escaper $escaper
+ * @var Items   $block
+ */
+
+use Magento\Framework\Escaper;
+use Sales\Quote\Block\Adminhtml\Quote\View\Items;
+
+?>
+<table id="quote-table" class="quote items data table" style="width: 100%">
+    <thead>
+    <tr>
+        <th class="col item" scope="col"><span><?= $escaper->escapeHtml(__('Item')) ?></span></th>
+        <th class="col price" scope="col"><span><?= $escaper->escapeHtml(__('Price')) ?></span></th>
+        <th class="col qty" scope="col"><span><?= $escaper->escapeHtml(__('Qty')) ?></span></th>
+        <th class="col subtotal" scope="col"><span><?= $escaper->escapeHtml(__('Subtotal')) ?></span></th>
+    </tr>
+    </thead>
+    <?php foreach ($block->getItems() as $item): ?>
+        <?= $block->getItemHtml($item) ?>
+    <?php endforeach ?>
+</table>

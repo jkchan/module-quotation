@@ -1,0 +1,68 @@
+<?php
+/** @var $block Renderer */
+/** @var $escaper Escaper */
+
+use Magento\Framework\Escaper;
+use Sales\Quote\Block\Adminhtml\Quote\View\Item\Renderer;
+
+$item             = $block->getItem();
+$product          = $item->getProduct();
+$isVisibleProduct = $product->isVisibleInSiteVisibility();
+?>
+<tbody class="cart item">
+    <tr class="item-info">
+        <td data-th="<?= $escaper->escapeHtml(__('Item')) ?>" class="col item">
+            <div class="product-item-details">
+                <strong class="product-item-name">
+                    <?= $escaper->escapeHtml($block->getProductName()) ?>
+                </strong>
+                <?= $escaper->escapeHtml(__("SKU - %1",$block->getProduct()->getSku())) ?>
+                <?php if ($block->hasProductUrl()) : ?>
+                    <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>" target="_blank">
+                        <?= __('View in Store') ?>
+                    </a>
+                <?php endif; ?>
+                | <a href="<?= $escaper->escapeUrl($block->getEditUrl()) ?>" target="_blank">
+                    <?= __('Edit') ?>
+                </a>
+                <?php if ($options = $block->getOptionList()) : ?>
+                    <dl class="item-options">
+                        <?php foreach ($options as $_option) : ?>
+                            <?php $formatedOptionValue = $block->getFormattedOptionValue($_option) ?>
+                            <dt><?= $escaper->escapeHtml($_option['label']) ?></dt>
+                            <dd>
+                                <?php if (isset($formatedOptionValue['full_view'])) : ?>
+                                    <?= $escaper->escapeHtml($formatedOptionValue['full_view']) ?>
+                                <?php else : ?>
+                                    <?= $escaper->escapeHtml($formatedOptionValue['value'], ['span', 'a']) ?>
+                                <?php endif; ?>
+                            </dd>
+                        <?php endforeach; ?>
+                    </dl>
+                <?php endif; ?>
+                <?php if ($messages = $block->getMessages()) : ?>
+                    <?php foreach ($messages as $message) : ?>
+                        <div class="cart item message <?= $escaper->escapeHtmlAttr($message['type']) ?>">
+                            <div><?= $escaper->escapeHtml($message['text']) ?></div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+                <?php if ($addInfoBlock) : ?>
+                    <?= $addInfoBlock->setItem($item)->toHtml() ?>
+                <?php endif; ?>
+            </div>
+        </td>
+        <td class="col price" data-th="<?= $escaper->escapeHtml(__('Price')) ?>">
+            <?= $block->getUnitPriceHtml($item) ?>
+        </td>
+        <td class="col qty" data-th="<?= $escaper->escapeHtml(__('Qty')) ?>">
+            <div class="field qty">
+                <strong><?= $escaper->escapeHtmlAttr($block->getQty()) ?></strong>
+            </div>
+        </td>
+        <td class="col subtotal" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">
+            <?= $block->getRowTotalHtml($item) ?>
+        </td>
+    </tr>
+</tbody>
