@@ -33,7 +33,7 @@ This module allows the admin to view quotations stored in the database's quote t
 ### **Step 3: Enable the Module**
 - Once the module is installed, enable it using Magento's command-line tool:
   ```bash
-  php bin/magento module:enable Sales_Quotation
+  php bin/magento module:enable Sales_Quote
   ```
 
 ---
