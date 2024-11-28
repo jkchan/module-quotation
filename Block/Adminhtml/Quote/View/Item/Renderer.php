@@ -58,7 +58,7 @@ class Renderer extends Template implements IdentityInterface
         protected PriceCurrencyInterface $priceCurrency,
         protected InterpretationStrategyInterface $messageInterpretationStrategy,
         array $data = [],
-        protected ItemResolverInterface $itemResolver = null
+        protected ItemResolverInterface $itemResolver
     ) {
         parent::__construct($context, $data);
         $this->_isScopePrivate = true;

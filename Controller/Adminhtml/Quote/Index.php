@@ -13,7 +13,7 @@ class Index extends Action
      */
     public function __construct(
         Context $context,
-        protected PageFactory $resultPageFactory = false
+        protected PageFactory $resultPageFactory
     ) {
         parent::__construct($context);
     }
