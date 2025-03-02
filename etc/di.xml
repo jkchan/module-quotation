@@ -7,4 +7,8 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\OfflinePayments\Model\Checkmo">
+        <plugin name="sales_quote_checkmo_plugin" type="Sales\Quote\Plugin\Payment\Method\CheckmoPlugin"/>
+    </type>
 </config>

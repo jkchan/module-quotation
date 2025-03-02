@@ -33,15 +33,4 @@ class Collection extends SearchResult
     ) {
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $mainTable, $resourceModel);
     }
-
-    /**
-     * @return $this
-     */
-    protected function _initSelect()
-    {
-        parent::_initSelect();
-        $this->getSelect()->where("main_table.is_active = '" . 1 . "'");
-
-        return $this;
-    }
 }

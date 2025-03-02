@@ -4,6 +4,8 @@
         <sequence>
             <module name="Magento_Backend"/>
             <module name="Magento_Quote"/>
+            <module name="Magento_OfflinePayments" />
+            <module name="Magento_Framework" />
         </sequence>
     </module>
 </config>

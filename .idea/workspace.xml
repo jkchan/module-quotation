@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e748b842-ef1a-4c8c-8c4d-c4c5605fcad5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/Adminhtml/Quote/View/Item/Renderer.php" beforeDir="false" afterPath="$PROJECT_DIR$/Block/Adminhtml/Quote/View/Item/Renderer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/Adminhtml/Quote/Index.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Adminhtml/Quote/Index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/etc/adminhtml/menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/etc/adminhtml/menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Block/Adminhtml/Grid.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/ResourceModel/Quote/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/ResourceModel/Quote/Collection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etc/di.xml" beforeDir="false" afterPath="$PROJECT_DIR$/etc/di.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/etc/module.xml" beforeDir="false" afterPath="$PROJECT_DIR$/etc/module.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +58,8 @@
       <updated>1731626634828</updated>
       <workItem from="1731626636183" duration="7174000" />
       <workItem from="1731879114731" duration="599000" />
-      <workItem from="1731881256114" duration="1745000" />
+      <workItem from="1731881256114" duration="10465000" />
+      <workItem from="1740951408058" duration="210000" />
     </task>
     <servers />
   </component>
